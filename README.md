@@ -82,7 +82,7 @@ dependencies:
 ```
 * Lalu jalankan perintah **flutter pub get** di terminal, perintah ini digunakan untuk mengambil semua paket (dependencies) yang didefinisikan dalam file **pubspec.yaml** dan mengunduhnya ke dalam project yang kita buat. Setelah semua paket berhasil diunduh, jalankan perintah **flutter run**.
 
-## 
+## Tampilan Output
 ![img](img/ss1.png)
 
 ## Terima Kasih
