@@ -1,16 +1,88 @@
 # flutter_uas
+## Profil
+|        #        | Biodata           |
+| --------------- | ----------------- |
+| **Nama**        | D.Wita Aeni       |
+| **NIM**         | 312110222         |
+| **Kelas**       | TI.21.A.1         |
+| **Mata Kuliah** | Pemrograman Web 2 |
 
-A new Flutter project.
+## Membuat Tampilan List API dengan Menggunakan Flutter
 
-## Getting Started
+Program ini dibuat untuk menampilkan daftar nama Daerah di Indonesia. Data API bisa dilihat di link berikut [Nama Daerah di Indonesia](http://dev.farizdotid.com/api/daerahindonesia/provinsi). Berikut merupakan source code untuk **main.dart**:
 
-This project is a starting point for a Flutter application.
+```dart
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-A few resources to get you started if this is your first Flutter project:
+void main() {
+  runApp(MyApp());
+}
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+class _MyAppState extends State<MyApp> {
+  List<dynamic> provinces = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getDataFromApi();
+  }
+
+  Future<void> getDataFromApi() async {
+    Uri apiUrl = Uri.parse('http://dev.farizdotid.com/api/daerahindonesia/provinsi');
+
+    try {
+      final response = await http.get(apiUrl);
+      if (response.statusCode == 200) {
+        setState(() {
+          provinces = json.decode(response.body)['provinsi'];
+        });
+      } else {
+        print('Failed to load data from API');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Daftar Provinsi di Indonesia'),
+        ),
+        body: ListView.builder(
+          itemCount: provinces.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(provinces[index]['nama']),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+```
+
+* Setelah membuat source code pada **main.dart**, lalu tambahkan package http pada **pubspec.yaml** seperti berikut:
+
+```dart
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.3
+```
+* Lalu jalankan perintah **flutter pub get** di terminal, perintah ini digunakan untuk mengambil semua paket (dependencies) yang didefinisikan dalam file **pubspec.yaml** dan mengunduhnya ke dalam project yang kita buat. Setelah semua paket berhasil diunduh, jalankan perintah **flutter run**.
+
+## 
+![img](img/ss1.png)
+
+## Terima Kasih
